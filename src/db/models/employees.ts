@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-newline */
 import { Sequelize, DataTypes as dataTypes, Model, ModelCtor } from 'sequelize';
-import { employees } from '../types/entities/Employees';
+import { employees } from '../../types/entities/Employees';
 import { Employees_VehicleModel } from './employess_vehicles';
 
 export const EmployeesModel = (

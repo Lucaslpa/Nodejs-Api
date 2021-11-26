@@ -1,5 +1,5 @@
 import { Sequelize, DataTypes as dataTypes, Model } from 'sequelize';
-import { employees_vehicle } from '../types/entities/Employees_Vehicles';
+import { employees_vehicle } from '../../types/entities/Employees_Vehicles';
 
 export const Employees_VehicleModel = (
   sequelize: Sequelize,

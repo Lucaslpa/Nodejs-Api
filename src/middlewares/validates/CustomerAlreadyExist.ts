@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { clientsModel } from '../../models';
+import { clientsModel } from '../../db/models';
 import { ClientsTypes } from '../../types/Clients';
 
 export const VerifyCustomerAlreadyExist = async (

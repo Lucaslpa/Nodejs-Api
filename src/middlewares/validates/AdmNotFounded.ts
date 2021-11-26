@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-newline */
 import { Request, Response, NextFunction } from 'express';
-import { administratorModel } from '../../models';
+import { administratorModel } from '../../db/models';
 import { AdministratorTypes } from '../../types/Administrator';
 
 export const AdmNotFounded = async (

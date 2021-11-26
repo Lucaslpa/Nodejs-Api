@@ -1,7 +1,7 @@
 import { DataTypes, Sequelize } from 'sequelize';
 import { employees } from '../../types/entities/Employees';
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EmployeesModel } from '../../models/employees';
+import { EmployeesModel } from '../../db/models/employees';
 
 export const EmployeesService = (sequelize: Sequelize) => {
   const Employees = EmployeesModel(sequelize, DataTypes);
