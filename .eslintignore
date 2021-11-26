@@ -1,3 +1,6 @@
 dist
 node_modules
-.eslintrc.js
+
+test.sqlite3
+data.sqlite3
+src/db/test.sqlite3

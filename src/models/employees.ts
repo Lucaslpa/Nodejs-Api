@@ -8,13 +8,36 @@ export const EmployeesModel = (
   DataTypes: typeof dataTypes
 ): ModelCtor<Model<employees>> => {
   const table = sequelize.define('Employees', {
-    cpf: DataTypes.STRING(11),
+    cpf: {
+      type: DataTypes.STRING(11),
+      validate: {
+        max: 11,
+        min: 11,
+      },
+    },
     name: DataTypes.STRING,
     lastName: DataTypes.STRING,
-    email: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        min: 5,
+        max: 90,
+        isEmail: true,
+      },
+    },
     avatar: DataTypes.STRING,
-    biography: DataTypes.STRING,
-    password: DataTypes.STRING,
+    biography: {
+      type: DataTypes.STRING,
+      validate: {
+        min: 20,
+      },
+    },
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        min: 8,
+      },
+    },
     role: DataTypes.STRING,
   });
   table.hasMany(Employees_VehicleModel(sequelize, DataTypes));

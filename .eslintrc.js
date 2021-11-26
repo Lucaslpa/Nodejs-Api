@@ -21,5 +21,6 @@ module.exports = {
     '@typescript-eslint/naming-convention': 'off',
     'operator-linebreak': 'off',
     'implicit-arrow-linebreak': 'off',
+    'function-paren-newline': 'off',
   },
 };

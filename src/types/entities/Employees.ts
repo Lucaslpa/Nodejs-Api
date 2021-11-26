@@ -1,6 +1,7 @@
 type role = 'administrator' | 'seller';
 
 export type employees = {
+  id?: number;
   cpf: string;
   name: string;
   lastName: string;
