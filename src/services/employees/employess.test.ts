@@ -24,7 +24,6 @@ describe('EmployeesService', () => {
   it('should throw a error if try create a employer already existent ', async () => {
     const employer = generateEmployer();
     await employeesService.create(employer);
-
     await expect(employeesService.create(employer)).rejects.toThrowError(
       'biography must be unique'
     );
@@ -33,9 +32,7 @@ describe('EmployeesService', () => {
 
   it('should create a employer ', async () => {
     const createdEmployer = await employeesService.create(generateEmployer());
-
     expect(createdEmployer?.id).toBeTruthy();
-
     await employeesService.deleteAll();
   });
 
@@ -53,14 +50,11 @@ describe('EmployeesService', () => {
         },
         createdEmployer.id
       );
-
       const updatedEmployer = await employeesService.getOne(createdEmployer.id);
-
       expect(updateResponse).toBe(1);
       expect(updatedEmployer?.email).not.toEqual(createdEmployer.email);
       expect(updatedEmployer?.lastName).not.toEqual(createdEmployer.lastName);
     }
-
     await employeesService.deleteAll();
   });
 
@@ -72,10 +66,8 @@ describe('EmployeesService', () => {
       typeof createdEmployer.id !== 'undefined'
     ) {
       const employer = await employeesService.getOne(createdEmployer.id);
-
       expect(employer?.id).toBe(createdEmployer.id);
     }
-
     await employeesService.deleteAll();
   });
 
@@ -94,7 +86,6 @@ describe('EmployeesService', () => {
         )
       ).rejects.toThrowError('email must be unique');
     }
-
     await employeesService.deleteAll();
   });
 
@@ -120,7 +111,6 @@ describe('EmployeesService', () => {
     const generateEmployees = async () => {
       await employeesService.create(generateEmployer());
     };
-
     const getMany = async () => {
       const response = await employeesService.getMany(1);
       expect(response.count).toBe(13);

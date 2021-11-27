@@ -10,21 +10,25 @@ export const EmployeesService = (sequelize: Sequelize) => {
     create: async (Employer: employees): Promise<employees | void> => {
       try {
         const response = await Employees.create(Employer);
-
         return response.get({ clone: true });
       } catch (err: any) {
-        throw new Error(err.errors[0].message);
+        if (err.errors[0]) {
+          throw new Error(err.errors[0].message);
+        } else {
+          throw new Error(err);
+        }
       }
     },
+
     delete: async (id: number): Promise<number> => {
       try {
         const response = await Employees.destroy({ where: { id } });
-
         return response;
       } catch (err: any) {
         throw new Error(err.errors[0].message);
       }
     },
+
     update: async (
       data: Partial<employees>,
       employerID: number
@@ -33,23 +37,19 @@ export const EmployeesService = (sequelize: Sequelize) => {
         const response = await Employees.update(data, {
           where: { id: employerID },
         });
-
         return response[0];
       } catch (err: any) {
         throw new Error(err.errors[0].message);
       }
     },
+
     getOne: async (id: number): Promise<employees | void> => {
-      try {
-        const response = await Employees.findByPk(id);
-
-        if (!response) throw new Error('employer not found');
-
-        return response.get({ clone: true });
-      } catch (err: any) {
-        throw new Error(err.errors[0].message);
-      }
+      if (!id) throw 'id was not provided';
+      const response = await Employees.findByPk(id);
+      if (!response) throw 'employer not found';
+      return response.get({ clone: true });
     },
+
     getMany: async (
       page: number
     ): Promise<{ count: number; employees: employees[] }> => {
@@ -60,9 +60,7 @@ export const EmployeesService = (sequelize: Sequelize) => {
           offset: initial,
           limit: ending,
         });
-
-        if (!response) throw new Error('employees not found');
-
+        if (!response) throw new Error('not found');
         return {
           count: response.count,
           employees: response.rows.map((employer) =>
@@ -73,6 +71,7 @@ export const EmployeesService = (sequelize: Sequelize) => {
         throw new Error(err.errors[0].message);
       }
     },
+
     deleteAll: async (): Promise<void> => {
       try {
         await Employees.destroy({ truncate: true, where: {} });

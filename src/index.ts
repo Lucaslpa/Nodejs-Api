@@ -6,7 +6,7 @@ import { errorHandler } from './middlewares/errorHandler';
 require('dotenv').config();
 
 const App = express();
-App.use(cors({ origin: [`${process.env.CLIENT_ALLOW_CORS}`] }));
+App.use(cors({ origin: ['*'] }));
 App.use(express.json());
 App.use(express.urlencoded({ extended: true }));
 App.use(router);
