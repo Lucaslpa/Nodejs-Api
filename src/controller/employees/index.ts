@@ -57,4 +57,17 @@ export const EmployeesController = () => ({
       next(new Error(err));
     }
   },
+
+  getManyEmployees: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const page = Number(req.params.page);
+
+      if (!page) throw 'page was not provided';
+      const response = await EmployeesService(sequelize).getMany(page);
+      if (!response) throw 'employees not found';
+      res.status(200).send(response);
+    } catch (err: any) {
+      next(new Error(err));
+    }
+  },
 });

@@ -60,4 +60,19 @@ describe('EmployeesRoute', () => {
     expect(get.data.email).not.toBe(create.data.email);
     await Axios.delete(`/employer/${create.data.id}`);
   });
+
+  it('should get many employees', async () => {
+    const create = await Axios.post('/employer', {
+      employer: generateEmployer(),
+    });
+    const create2 = await Axios.post('/employer', {
+      employer: generateEmployer(),
+    });
+    const getMany = await Axios.get('/employees/1');
+    expect(getMany.data.count).toBe(2);
+    expect(getMany.data.employees[0].id).toBe(create.data.id);
+    expect(getMany.data.employees[1].id).toBe(create2.data.id);
+    await Axios.delete(`/employer/${create.data.id}`);
+    await Axios.delete(`/employer/${create2.data.id}`);
+  });
 });

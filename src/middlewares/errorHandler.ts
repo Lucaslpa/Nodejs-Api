@@ -37,6 +37,12 @@ export const errorHandler = (
     case 'email must be unique':
       res.status(409).json({ Error: 'email already in use' });
       return;
+    case 'page was not provided':
+      response(400);
+      return;
+    case 'employees not found':
+      response(404);
+      return;
     default:
       response(500);
   }
