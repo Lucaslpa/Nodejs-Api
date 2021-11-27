@@ -3,11 +3,15 @@ import { JWT } from '../../utils/jwt/Jwt';
 
 const jwt = new JWT();
 
-export const Authorize = (req: Request, res: Response, next: NextFunction) => {
+export const VerifyAuthentication = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { authorization } = req.headers;
 
   function unauthorizedResponse() {
-    res.status(401).json({ error: 'Unauthorized' });
+    res.status(401).json({ Error: 'Unauthorized' });
   }
 
   if (!authorization) {
