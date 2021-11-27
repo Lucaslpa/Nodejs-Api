@@ -50,6 +50,13 @@ export const EmployeesService = (sequelize: Sequelize) => {
       return response.get({ clone: true });
     },
 
+    getOneByEmail: async (email: string): Promise<employees | void> => {
+      if (!email) throw 'email was not provided';
+      const response = await Employees.findOne({ where: { email } });
+      if (!response) throw 'employer with this email not found';
+      return response.get({ clone: true });
+    },
+
     getMany: async (
       page: number
     ): Promise<{ count: number; employees: employees[] }> => {

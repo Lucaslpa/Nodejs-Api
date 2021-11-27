@@ -2,8 +2,28 @@ import { Request, Response, NextFunction } from 'express';
 import { Error } from 'sequelize/dist';
 import { EmployeesService } from '../../services/employees';
 import { sequelize } from '../../db/connectDB';
+import { BCRYPT } from '../../utils/bcrypt';
+import { JWT } from '../../utils/jwt/Jwt';
 
+const bcrypt = new BCRYPT();
+const jwt = new JWT();
 export const EmployeesController = () => ({
+  authenticate: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { email, password } = req.body;
+      if (!email) throw 'email was not provided';
+      if (!password) throw 'password was not provided';
+      const employer = await EmployeesService(sequelize).getOneByEmail(email);
+      if (!employer) throw 'employer with this email not found';
+      const passwordIsEqual = await bcrypt.compare(password, employer.password);
+      if (!passwordIsEqual) throw 'invalid password';
+      const token = jwt.generateToken({ id: employer.id, role: employer.role });
+      res.status(200).json({ token });
+    } catch (err: any) {
+      next(new Error(err));
+    }
+  },
+
   getEmployer: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const employerID = Number(req.params.id);
@@ -19,9 +39,11 @@ export const EmployeesController = () => ({
     try {
       const { employer } = req.body;
       if (!employer) throw 'employer was not provided';
-      const createdEmployer = await EmployeesService(sequelize).create(
-        employer
-      );
+      const encryptedPassword = await bcrypt.encrypt(employer.password);
+      const createdEmployer = await EmployeesService(sequelize).create({
+        ...employer,
+        password: encryptedPassword,
+      });
       res.status(200).json(createdEmployer);
     } catch (err: any) {
       next(err);

@@ -10,5 +10,6 @@ EmployeesRoutes.post('/employer', employeesController.createEmployer);
 EmployeesRoutes.delete('/employer/:id', employeesController.deleteEmployer);
 EmployeesRoutes.put('/employer/:id', employeesController.updateEmployer);
 EmployeesRoutes.get('/employees/:page', employeesController.getManyEmployees);
+EmployeesRoutes.post('/authenticate', employeesController.authenticate);
 
 export default EmployeesRoutes;

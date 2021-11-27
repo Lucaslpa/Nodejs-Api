@@ -12,33 +12,33 @@ export const errorHandler = (
     res.status(status).json({ Error });
   }
 
+  const error400 = Error.match(/was not provided/gi);
+  const error409 = Error.match(/must be unique/gi);
+
+  if (error400?.length) {
+    response(400);
+    return;
+  }
+
+  if (error409?.length) {
+    res
+      .status(409)
+      .json({ Error: Error.replace(/must be unique/gi, 'already in use') });
+    return;
+  }
+
   switch (Error) {
+    case 'employer with this email not found':
+      response(404);
+      return;
     case 'employer not deleted':
       response(500);
       return;
     case 'employer not found':
       response(404);
       return;
-    case 'id was not provided':
-      response(400);
-      return;
-    case 'employer was not provided':
-      response(400);
-      return;
-    case 'biography must be unique':
-      res.status(409).json({ Error: 'biography already in use' });
-      return;
-    case 'cpf must be unique':
-      res.status(409).json({ Error: 'cpf already in use' });
-      return;
-    case 'avatar must be unique':
-      res.status(409).json({ Error: 'avatar already in use' });
-      return;
-    case 'email must be unique':
-      res.status(409).json({ Error: 'email already in use' });
-      return;
-    case 'page was not provided':
-      response(400);
+    case 'invalid password':
+      response(401);
       return;
     case 'employees not found':
       response(404);
