@@ -8,7 +8,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         unique: true,
       },
-      id_employee: {
+      id_employer: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },

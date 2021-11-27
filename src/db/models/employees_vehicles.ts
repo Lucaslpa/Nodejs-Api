@@ -6,7 +6,7 @@ export const Employees_VehicleModel = (
   DataTypes: typeof dataTypes
 ) =>
   sequelize.define<Model<employees_vehicle>>('Employees_Vehicle', {
-    id_employee: {
+    id_employer: {
       type: DataTypes.INTEGER,
       references: {
         model: 'Employees',

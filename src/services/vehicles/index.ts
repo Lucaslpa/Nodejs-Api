@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import { DataTypes, Sequelize } from 'sequelize';
 import { vehicle } from '../../types/entities/Vehicles';
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -57,13 +58,20 @@ export const VehicleService = (sequelize: Sequelize) => {
       try {
         const ending = page * 10;
         const initial = ending - 10;
-        const response = await Vehicles.findAndCountAll({
-          offset: initial,
-          limit: ending,
-          where: {
-            status,
-          },
-        });
+        const response = await Vehicles.findAndCountAll(
+          status
+            ? {
+                offset: initial,
+                limit: ending,
+                where: {
+                  status,
+                },
+              }
+            : {
+                offset: initial,
+                limit: ending,
+              }
+        );
         if (!response) throw new Error('not found');
         return {
           count: response.count,

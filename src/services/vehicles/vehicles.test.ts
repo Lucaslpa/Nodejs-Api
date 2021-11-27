@@ -82,21 +82,15 @@ describe('VehicleService', () => {
     await vehicleService.deleteAll();
   });
 
-  it('should get many employees', async () => {
-    const generateEmployees = async () => {
-      await vehicleService.create(generateVehicle());
-    };
-    const getMany = async () => {
-      const response = await vehicleService.getMany(1);
-      expect(response.count).toBe(13);
-      expect(response.Vehicles.length).toBe(10);
-      await vehicleService.deleteAll();
-    };
-    for (let i = 0; i < 13; i++) {
-      generateEmployees();
-      if (i === 12) {
-        getMany();
-      }
-    }
+  it('should get many Vehicles', async () => {
+    await vehicleService.create(generateVehicle());
+    await vehicleService.create(generateVehicle());
+    await vehicleService.create(generateVehicle());
+    await vehicleService.create(generateVehicle());
+    await vehicleService.create(generateVehicle());
+
+    const response = await vehicleService.getMany(1);
+    expect(response.Vehicles.length).toBe(5);
+    await vehicleService.deleteAll();
   });
 });

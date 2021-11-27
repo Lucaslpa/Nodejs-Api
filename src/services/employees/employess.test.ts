@@ -108,20 +108,14 @@ describe('EmployeesService', () => {
   });
 
   it('should get many employees', async () => {
-    const generateEmployees = async () => {
-      await employeesService.create(generateEmployer());
-    };
-    const getMany = async () => {
-      const response = await employeesService.getMany(1);
-      expect(response.count).toBe(13);
-      expect(response.employees.length).toBe(10);
-      await employeesService.deleteAll();
-    };
-    for (let i = 0; i < 13; i++) {
-      generateEmployees();
-      if (i === 12) {
-        getMany();
-      }
-    }
+    await employeesService.create(generateEmployer());
+    await employeesService.create(generateEmployer());
+    await employeesService.create(generateEmployer());
+    await employeesService.create(generateEmployer());
+    await employeesService.create(generateEmployer());
+    const response = await employeesService.getMany(1);
+    expect(response.employees.length).toBe(5);
+
+    await employeesService.deleteAll();
   });
 });
