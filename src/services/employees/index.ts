@@ -12,7 +12,7 @@ export const EmployeesService = (sequelize: Sequelize) => {
         const response = await Employees.create(Employer);
         return response.get({ clone: true });
       } catch (err: any) {
-        if (err.errors[0]) {
+        if (err.errors) {
           throw new Error(err.errors[0].message);
         } else {
           throw new Error(err);

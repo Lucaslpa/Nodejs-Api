@@ -8,6 +8,7 @@ export const errorHandler = (
   next: NextFunction
 ) => {
   const Error = error.message;
+
   function response(status: number) {
     res.status(status).json({ Error });
   }
@@ -38,10 +39,16 @@ export const errorHandler = (
       response(404);
       return;
     case 'invalid password':
-      response(401);
+      response(400);
       return;
     case 'employees not found':
       response(404);
+      return;
+    case 'vehicle not found':
+      response(404);
+      return;
+    case 'Error: Validation len on cpf failed':
+      res.status(400).json({ Error: 'Invalid cpf' });
       return;
     default:
       response(500);

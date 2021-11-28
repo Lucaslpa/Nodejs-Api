@@ -11,8 +11,7 @@ export const EmployeesModel = (
     cpf: {
       type: DataTypes.STRING(11),
       validate: {
-        max: 11,
-        min: 11,
+        len: [11, 11],
       },
     },
     name: DataTypes.STRING,

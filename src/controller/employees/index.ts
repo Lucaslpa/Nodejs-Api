@@ -46,7 +46,7 @@ export const EmployeesController = () => ({
       });
       res.status(200).json(createdEmployer);
     } catch (err: any) {
-      next(err);
+      next(new Error(err));
     }
   },
 

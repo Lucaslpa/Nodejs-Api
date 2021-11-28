@@ -58,6 +58,7 @@ export const VehicleService = (sequelize: Sequelize) => {
       try {
         const ending = page * 10;
         const initial = ending - 10;
+        console.log('dkdkdkdkdkd', status);
         const response = await Vehicles.findAndCountAll(
           status
             ? {

@@ -32,6 +32,5 @@ EmployeesRoutes.get(
   VerifyAuthentication,
   employeesController.getManyEmployees
 );
-EmployeesRoutes.post('/authenticate', employeesController.authenticate);
 
 export default EmployeesRoutes;
