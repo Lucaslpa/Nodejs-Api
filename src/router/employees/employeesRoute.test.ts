@@ -64,14 +64,11 @@ describe('EmployeesRoute', () => {
   it('should create a employer', async () => {
     const employer = generateEmployer();
     const create = await Axios.post('/employer', { employer }, {});
-
-    console.log({ create });
     const login = await Axios.post('/login', {
       email: employer.email,
       password: employer.password,
     });
     expect(create.data.id).toBeTruthy();
-
     await Axios.delete(`/employer/${create.data.id}`, {
       headers: {
         authorization: `Bearer ${login.data.token}`,
@@ -87,7 +84,6 @@ describe('EmployeesRoute', () => {
       password: employer.password,
     });
     expect(create.data.password).not.toBe(employer.password);
-
     await Axios.delete(`/employer/${create.data.id}`, {
       headers: {
         authorization: `Bearer ${login.data.token}`,
@@ -121,7 +117,6 @@ describe('EmployeesRoute', () => {
     const create = await Axios.post('/employer', {
       employer,
     });
-
     const login = await Axios.post('/login', {
       email: employer.email,
       password: employer.password,
@@ -174,7 +169,6 @@ describe('EmployeesRoute', () => {
     const create2 = await Axios.post('/employer', {
       employer: employer2,
     });
-
     const login = await Axios.post('/login', {
       email: employer.email,
       password: employer.password,
@@ -184,7 +178,6 @@ describe('EmployeesRoute', () => {
         authorization: `Bearer ${login.data.token}`,
       },
     });
-
     expect(getMany.data.employees.length).toBeGreaterThan(1);
 
     await Axios.delete(`/employer/${create.data.id}`, {

@@ -23,7 +23,6 @@ function generateEmployer() {
 describe('EmployeesService', () => {
   it('should throw a error if try create a employer already existent ', async () => {
     const employer = generateEmployer();
-    console.log({ employer });
     await employeesService.create(employer);
     await expect(employeesService.create(employer)).rejects.toThrowError(
       'biography must be unique'
