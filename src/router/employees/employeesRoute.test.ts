@@ -7,7 +7,7 @@ function generateEmployer() {
   return {
     avatar: faker.image.avatar(),
     biography: faker.lorem.paragraph(40),
-    cpf: faker.lorem.slug(11),
+    cpf: faker.datatype.string(11),
     email: faker.internet.email(),
     lastName: faker.name.lastName(),
     name: faker.name.firstName(),
@@ -24,7 +24,7 @@ describe('EmployeesRoute', () => {
     const create = await Axios.post('/employer', {
       employer,
     });
-    const login = await Axios.post('/authenticate', {
+    const login = await Axios.post('/login', {
       email: employer.email,
       password: employer.password,
     });
@@ -43,7 +43,7 @@ describe('EmployeesRoute', () => {
   it('should get a employer', async () => {
     const employer = generateEmployer();
     const create = await Axios.post('/employer', { employer }, {});
-    const login = await Axios.post('/authenticate', {
+    const login = await Axios.post('/login', {
       email: employer.email,
       password: employer.password,
     });
@@ -64,7 +64,9 @@ describe('EmployeesRoute', () => {
   it('should create a employer', async () => {
     const employer = generateEmployer();
     const create = await Axios.post('/employer', { employer }, {});
-    const login = await Axios.post('/authenticate', {
+
+    console.log({ create });
+    const login = await Axios.post('/login', {
       email: employer.email,
       password: employer.password,
     });
@@ -80,7 +82,7 @@ describe('EmployeesRoute', () => {
   it('password should be encrypted', async () => {
     const employer = generateEmployer();
     const create = await Axios.post('/employer', { employer }, {});
-    const login = await Axios.post('/authenticate', {
+    const login = await Axios.post('/login', {
       email: employer.email,
       password: employer.password,
     });
@@ -97,11 +99,11 @@ describe('EmployeesRoute', () => {
     const employer = generateEmployer();
     const create = await Axios.post('/employer', { employer });
     const create2 = await Axios.post('/employer', { employer });
-    const login = await Axios.post('/authenticate', {
+    const login = await Axios.post('/login', {
       email: employer.email,
       password: employer.password,
     });
-    expect(create2.data.Error).toBe('biography already in use');
+    expect(create2.data.Error).toBe('Error: biography already in use');
     await Axios.delete(`/employer/${create.data.id}`, {
       headers: {
         authorization: `Bearer ${login.data.token}`,
@@ -119,7 +121,8 @@ describe('EmployeesRoute', () => {
     const create = await Axios.post('/employer', {
       employer,
     });
-    const login = await Axios.post('/authenticate', {
+
+    const login = await Axios.post('/login', {
       email: employer.email,
       password: employer.password,
     });
@@ -134,7 +137,7 @@ describe('EmployeesRoute', () => {
   it('should update employer', async () => {
     const employer = generateEmployer();
     const create = await Axios.post('/employer', { employer }, {});
-    const login = await Axios.post('/authenticate', {
+    const login = await Axios.post('/login', {
       email: employer.email,
       password: employer.password,
     });
@@ -172,7 +175,7 @@ describe('EmployeesRoute', () => {
       employer: employer2,
     });
 
-    const login = await Axios.post('/authenticate', {
+    const login = await Axios.post('/login', {
       email: employer.email,
       password: employer.password,
     });
@@ -181,9 +184,9 @@ describe('EmployeesRoute', () => {
         authorization: `Bearer ${login.data.token}`,
       },
     });
-    expect(getMany.data.count).toBe(2);
-    expect(getMany.data.employees[0].id).toBe(create.data.id);
-    expect(getMany.data.employees[1].id).toBe(create2.data.id);
+
+    expect(getMany.data.employees.length).toBeGreaterThan(1);
+
     await Axios.delete(`/employer/${create.data.id}`, {
       headers: {
         authorization: `Bearer ${login.data.token}`,
@@ -196,12 +199,12 @@ describe('EmployeesRoute', () => {
     });
   });
 
-  it('should authenticate', async () => {
+  it('should login', async () => {
     const employer = generateEmployer();
     const create = await Axios.post('/employer', {
       employer,
     });
-    const login = await Axios.post('/authenticate', {
+    const login = await Axios.post('/login', {
       email: create.data.email,
       password: employer.password,
     });
@@ -222,15 +225,15 @@ describe('EmployeesRoute', () => {
     const create = await Axios.post('/employer', {
       employer,
     });
-    const loginValid = await Axios.post('/authenticate', {
+    const loginValid = await Axios.post('/login', {
       email: create.data.email,
       password: employer.password,
     });
-    const login = await Axios.post('/authenticate', {
+    const login = await Axios.post('/login', {
       email: create.data.email,
       password: 'wrongPassword',
     });
-    expect(login.status).toBe(401);
+    expect(login.status).toBe(400);
     expect(login.data.Error).toBe('invalid password');
     await Axios.delete(`/employer/${create.data.id}`, {
       headers: {
@@ -240,7 +243,7 @@ describe('EmployeesRoute', () => {
   });
 
   it('should warning employer not exist', async () => {
-    const login = await Axios.post('/authenticate', {
+    const login = await Axios.post('/login', {
       email: 'random@email.com',
       password: 'Password',
     });
@@ -259,7 +262,7 @@ describe('EmployeesRoute', () => {
     const create = await Axios.post('/employer', {
       employer: { ...employer, role: 'seller' },
     });
-    const login = await Axios.post('/authenticate', {
+    const login = await Axios.post('/login', {
       email: employer.email,
       password: employer.password,
     });
@@ -267,7 +270,7 @@ describe('EmployeesRoute', () => {
     const createAdm = await Axios.post('/employer', {
       employer: adm,
     });
-    const loginAdm = await Axios.post('/authenticate', {
+    const loginAdm = await Axios.post('/login', {
       email: adm.email,
       password: adm.password,
     });

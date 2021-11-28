@@ -101,7 +101,7 @@ describe('VehiclesRoute', () => {
       UseToken()
     );
     const getMany = await Axios.get('/vehicles/1', UseToken());
-    expect(getMany.data.count).toBe(3);
+    expect(getMany.data.count).toBeGreaterThan(3);
     await Axios.delete(`/vehicle/${create1.data.id}`, UseToken());
     await Axios.delete(`/vehicle/${create2.data.id}`, UseToken());
     await Axios.delete(`/vehicle/${create3.data.id}`, UseToken());

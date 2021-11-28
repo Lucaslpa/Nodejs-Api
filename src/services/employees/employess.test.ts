@@ -11,7 +11,7 @@ function generateEmployer() {
   return {
     avatar: faker.image.avatar(),
     biography: faker.lorem.paragraph(40),
-    cpf: faker.lorem.slug(11),
+    cpf: faker.datatype.string(11),
     email: faker.internet.email(),
     lastName: faker.name.lastName(),
     name: faker.name.firstName(),
@@ -23,6 +23,7 @@ function generateEmployer() {
 describe('EmployeesService', () => {
   it('should throw a error if try create a employer already existent ', async () => {
     const employer = generateEmployer();
+    console.log({ employer });
     await employeesService.create(employer);
     await expect(employeesService.create(employer)).rejects.toThrowError(
       'biography must be unique'

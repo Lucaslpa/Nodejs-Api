@@ -29,6 +29,9 @@ export const errorHandler = (
   }
 
   switch (Error) {
+    case 'Error: Validation isEmail on email failed':
+      res.status(400).json({ Error: 'Invalid Email' });
+      return;
     case 'Error: id_vehicle already in use':
       res.status(409).json({ Error: 'Vehicle already sold or reserved' });
       return;

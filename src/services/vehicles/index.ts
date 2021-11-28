@@ -44,10 +44,10 @@ export const VehicleService = (sequelize: Sequelize) => {
       }
     },
 
-    getOne: async (id: number): Promise<vehicle | void> => {
+    getOne: async (id: number): Promise<vehicle | null> => {
       if (!id) throw 'id was not provided';
       const response = await Vehicles.findByPk(id);
-      if (!response) throw null;
+      if (!response) return null;
       return response.get({ clone: true });
     },
 

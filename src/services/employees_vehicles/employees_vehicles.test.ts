@@ -53,28 +53,4 @@ describe('employees_employees_vehicles', () => {
     expect(resp1?.id).toBe(vehicle1?.id);
     await employees_vehiclesService.deleteAll();
   });
-
-  it('should get all transactions by employer', async () => {
-    const transaction1 = await employees_vehiclesService.create({
-      id_employer: 1,
-      id_vehicle: faker.datatype.number(),
-    });
-    const transaction2 = await employees_vehiclesService.create({
-      id_employer: 1,
-      id_vehicle: faker.datatype.number(),
-    });
-    const transaction3 = await employees_vehiclesService.create({
-      id_employer: 1,
-      id_vehicle: faker.datatype.number(),
-    });
-
-    const transactions =
-      await employees_vehiclesService.getAllTransactionsByEmployer(1);
-
-    expect(transactions[0]?.id).toBe(transaction1?.id);
-    expect(transactions[1]?.id).toBe(transaction2?.id);
-    expect(transactions[2]?.id).toBe(transaction3?.id);
-
-    await employees_vehiclesService.deleteAll();
-  });
 });
