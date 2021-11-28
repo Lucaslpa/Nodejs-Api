@@ -11,7 +11,8 @@ Para iniciar o servidor basta rodar o comando "npm run dev" e aguardar. Por padr
 Para um bom uso do projeto recomendo programas que fazem requisições http, tais como insomnia ou postman. 
 
 ## ⚠️ Testes
-Para iniciar os teste automatizados é importante que o projeto esteja  rodando adequadamente na porta 2000. Do contrário muitos testes falharão. Isso ocorre porque alguns testes utilizam o axios para fazer requisições nas rotas e verificar se algumas funcionalidades estão funcionando corretamente
+Para iniciar os teste automatizados é importante que o projeto esteja  rodando adequadamente na porta 2000. Do contrário muitos testes falharão. Isso ocorre porque alguns testes utilizam o axios para fazer requisições nas rotas e verificar se algumas funcionalidades estão funcionando corretamente.
+O comando para rodar os testes é "npm run test".
 
 ## ⚠️ Token
 Para a autenticação funcionar corretamente é necessário que o token seja enviada como Bearer token.
