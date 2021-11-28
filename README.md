@@ -14,7 +14,7 @@ Para um bom uso do projeto recomendo programas que fazem requisições http, tai
 Para iniciar estes teste automatizados é importante que o projeto esteja  rodando adequadamente na porta 2000. Do contrário muitos testes falharão. Isso ocorre porque alguns testes utilizam o axios para fazer requisições nas rotas e verificar se algumas funcionalidades estão funcionando corretamente
 
 ## ⚠️ Token
-Para a autenticação funcionar corretamente é necessário que seja enviada como Bearer token.
+Para a autenticação funcionar corretamente é necessário que o token seja enviada como Bearer token.
 
 ![image](https://user-images.githubusercontent.com/58526964/143788384-4830caad-a747-449c-9688-0dff6818dbef.png)
 
