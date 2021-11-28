@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import { DataTypes, Sequelize } from 'sequelize';
 import { employees_vehicle } from '../../types/entities/Employees_Vehicles';
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -31,24 +32,10 @@ export const Employees_vehiclesService = (sequelize: Sequelize) => {
       }
     },
 
-    update: async (
-      data: Partial<employees_vehicle>,
-      vehicleID: number
-    ): Promise<number> => {
-      try {
-        const response = await Employees_Vehicle.update(data, {
-          where: { id: vehicleID },
-        });
-        return response[0];
-      } catch (err: any) {
-        throw new Error(err.errors[0].message);
-      }
-    },
-
     getOne: async (id: number): Promise<employees_vehicle | void> => {
       if (!id) throw 'id was not provided';
       const response = await Employees_Vehicle.findByPk(id);
-      if (!response) throw 'vehicle not found';
+      if (!response) throw 'sale not found';
       return response.get({ clone: true });
     },
 
@@ -57,7 +44,7 @@ export const Employees_vehiclesService = (sequelize: Sequelize) => {
       const response = await Employees_Vehicle.findOne({
         where: { id_vehicle: id },
       });
-      if (!response) throw 'vehicle not found';
+      if (!response) throw 'sale not found';
       return response.get({ clone: true });
     },
 
@@ -68,13 +55,20 @@ export const Employees_vehiclesService = (sequelize: Sequelize) => {
       try {
         const ending = page * 10;
         const initial = ending - 10;
-        const response = await Employees_Vehicle.findAndCountAll({
-          offset: initial,
-          limit: ending,
-          where: {
-            id_employer: employerID,
-          },
-        });
+        const response = await Employees_Vehicle.findAndCountAll(
+          employerID
+            ? {
+                offset: initial,
+                limit: ending,
+                where: {
+                  id_employer: employerID,
+                },
+              }
+            : {
+                offset: initial,
+                limit: ending,
+              }
+        );
         if (!response) throw new Error('not found');
         return {
           count: response.count,
@@ -83,7 +77,7 @@ export const Employees_vehiclesService = (sequelize: Sequelize) => {
           ),
         };
       } catch (err: any) {
-        throw new Error(err.errors[0].message);
+        throw new Error(err);
       }
     },
 

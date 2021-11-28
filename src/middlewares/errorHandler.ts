@@ -29,6 +29,19 @@ export const errorHandler = (
   }
 
   switch (Error) {
+    case 'Ops. This vehicle not exist':
+      response(404);
+      return;
+    case 'query type transaction not provided':
+      response(400);
+      return;
+    case 'transaction type is invalid. Should be:  available, reserved or sold':
+      response(400);
+      return;
+    case 'sale not found':
+      response(404);
+      return;
+
     case 'employer with this email not found':
       response(404);
       return;
