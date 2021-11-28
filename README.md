@@ -82,7 +82,7 @@ Rota de pegar um veículo.
 ![image](https://user-images.githubusercontent.com/58526964/143787797-8c9af022-6f20-4ecd-8c55-9ce97cef8da9.png)
 
 ### Post - /transaction/:id?type=:type
-Rota para fazer uma transação do veículo. :id representa o id do veículo e :type representa o tipo de venda. Três tipos de transações são aceitas: available, reserved, sold. 
+Rota para fazer transação de um veículo. :id representa o id do veículo e :type representa o tipo de transação. Três tipos de transações são aceitas: available, reserved, sold. 
 
 ![image](https://user-images.githubusercontent.com/58526964/143787883-4a25b041-6955-452e-a2d2-6b85bfd5f28d.png)
 
@@ -102,7 +102,10 @@ Rota para pegar todas as transações.
 
 ![image](https://user-images.githubusercontent.com/58526964/143788012-7e428989-268e-4e97-bd4e-8baaabf63d30.png)
 
+### GET - /transaction/:id
+Rota para pegar uma transação.
 
+![image](https://user-images.githubusercontent.com/58526964/143788568-d62eaa4e-d31c-4872-b3f5-f50b222874ab.png)
 
 
 
