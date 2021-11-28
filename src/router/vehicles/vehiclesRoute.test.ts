@@ -3,12 +3,16 @@ import { vehicle as VehicleType } from '../../types/entities/Vehicles';
 /* eslint-disable no-prototype-builtins */
 import { Axios } from '../../axios';
 
-const UseToken = () => ({
-  headers: {
-    authorization:
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluaXN0cmF0b3IiLCJpYXQiOjE2MzgwNjExNTd9.e1V_lek1nhBgQZc6qwx43glDv7UulVaX6ZTpW9gbXyI',
-  },
-});
+const employer = {
+  avatar: faker.image.avatar(),
+  biography: faker.lorem.paragraph(40),
+  cpf: faker.datatype.string(11),
+  email: faker.internet.email(),
+  lastName: faker.name.lastName(),
+  name: faker.name.firstName(),
+  password: faker.lorem.word(11),
+  role: 'administrator',
+};
 
 function generateVehicle() {
   return {
@@ -29,7 +33,30 @@ function generateVehicle() {
   } as VehicleType;
 }
 
+let token: string;
+let id: any;
+
+const UseToken = () => ({
+  headers: {
+    authorization: `Bearer ${token}`,
+  },
+});
+
 describe('VehiclesRoute', () => {
+  beforeAll(async () => {
+    const create = await Axios.post('/employer', { employer });
+    const login = await Axios.post('/login', {
+      email: employer.email,
+      password: employer.password,
+    });
+    token = login.data.token;
+    id = create.data.id;
+  });
+
+  afterAll(async () => {
+    await Axios.delete(`/employer/${id}`, {});
+  });
+
   it('should return vehicle not found', async () => {
     const get = await Axios.get('/vehicle/1', UseToken());
     expect(get.data.Error).toBe('vehicle not found');
@@ -101,7 +128,7 @@ describe('VehiclesRoute', () => {
       UseToken()
     );
     const getMany = await Axios.get('/vehicles/1', UseToken());
-    expect(getMany.data.count).toBeGreaterThan(3);
+    expect(getMany.data.count).toBeGreaterThan(2);
     await Axios.delete(`/vehicle/${create1.data.id}`, UseToken());
     await Axios.delete(`/vehicle/${create2.data.id}`, UseToken());
     await Axios.delete(`/vehicle/${create3.data.id}`, UseToken());

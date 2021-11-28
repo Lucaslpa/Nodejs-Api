@@ -2,10 +2,10 @@
 import faker from 'faker';
 import { vehicle } from '../../types/entities/Vehicles';
 /* eslint-disable no-prototype-builtins */
-import { sequelizeTest } from '../../db/connectDB';
+import { sequelize } from '../../db/connectDB';
 import { VehicleService } from '.';
 
-const vehicleService = VehicleService(sequelizeTest);
+const vehicleService = VehicleService(sequelize);
 
 function generateVehicle() {
   return {

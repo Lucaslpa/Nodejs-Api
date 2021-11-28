@@ -2,10 +2,10 @@
 import faker from 'faker';
 import { employees_vehicle } from '../../types/entities/Employees_Vehicles';
 /* eslint-disable no-prototype-builtins */
-import { sequelizeTest } from '../../db/connectDB';
+import { sequelize } from '../../db/connectDB';
 import { Employees_vehiclesService } from '.';
 
-const employees_vehiclesService = Employees_vehiclesService(sequelizeTest);
+const employees_vehiclesService = Employees_vehiclesService(sequelize);
 
 function generateEmployees_vehicles() {
   return {

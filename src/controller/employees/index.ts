@@ -19,7 +19,7 @@ export const EmployeesController = () => ({
       const passwordIsEqual = await bcrypt.compare(password, employer.password);
       if (!passwordIsEqual) throw 'invalid password';
       const token = jwt.generateToken({ id: employer.id, role: employer.role });
-      res.status(200).json({ token });
+      res.status(200).json({ employer, token });
     } catch (err: any) {
       next(new Error(err));
     }
@@ -61,9 +61,7 @@ export const EmployeesController = () => ({
       const employerID = Number(req.params.id);
       if (!employerID) throw 'id was not provided';
       const response = await EmployeesService(sequelize).delete(employerID);
-
       if (!response) throw 'employer not deleted';
-
       res.status(200).send('employer deleted');
     } catch (err: any) {
       next(new Error(err));
