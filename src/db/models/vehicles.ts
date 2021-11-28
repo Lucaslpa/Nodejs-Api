@@ -1,6 +1,6 @@
+/* eslint-disable import/no-cycle */
 import { Sequelize, DataTypes as dataTypes, Model } from 'sequelize';
 import { vehicle } from '../../types/entities/Vehicles';
-import { Employees_VehicleModel } from './employees_vehicles';
 
 export const VehiclesModel = (
   sequelize: Sequelize,
@@ -16,8 +16,6 @@ export const VehiclesModel = (
     chassi: DataTypes.STRING,
     km: DataTypes.NUMBER,
   });
-
-  table.hasOne(Employees_VehicleModel(sequelize, DataTypes));
 
   return table;
 };

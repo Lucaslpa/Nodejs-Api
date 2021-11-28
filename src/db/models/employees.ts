@@ -39,6 +39,11 @@ export const EmployeesModel = (
     },
     role: DataTypes.STRING,
   });
-  table.hasMany(Employees_VehicleModel(sequelize, DataTypes));
+
+  table.hasMany(Employees_VehicleModel(sequelize, DataTypes), {
+    as: 'employees',
+    foreignKey: 'id_employer',
+  });
+
   return table;
 };

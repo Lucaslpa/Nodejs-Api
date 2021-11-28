@@ -10,7 +10,7 @@ export const EmployeesService = (sequelize: Sequelize) => {
     create: async (Employer: employees): Promise<employees | void> => {
       try {
         const response = await Employees.create(Employer);
-        return response.get({ clone: true });
+        return { ...response.get({ clone: true }), password: '' };
       } catch (err: any) {
         if (err.errors) {
           throw new Error(err.errors[0].message);
@@ -47,7 +47,8 @@ export const EmployeesService = (sequelize: Sequelize) => {
       if (!id) throw 'id was not provided';
       const response = await Employees.findByPk(id);
       if (!response) throw 'employer not found';
-      return response.get({ clone: true });
+      const employer = response.get({ clone: true });
+      return { ...employer, password: '' };
     },
 
     getOneByEmail: async (email: string): Promise<employees | void> => {
@@ -70,9 +71,10 @@ export const EmployeesService = (sequelize: Sequelize) => {
         if (!response) throw new Error('not found');
         return {
           count: response.count,
-          employees: response.rows.map((employer) =>
-            employer.get({ clone: true })
-          ),
+          employees: response.rows.map((employer) => ({
+            ...employer.get({ clone: true }),
+            password: '',
+          })),
         };
       } catch (err: any) {
         throw new Error(err.errors[0].message);

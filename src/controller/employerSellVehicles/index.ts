@@ -26,7 +26,7 @@ export const EmployeesSalesVehiclesController = () => ({
         transaction.id_vehicle
       );
       if (!employer || !vehicle) throw 'something was wrong';
-      res.status(200).json({ seller: employer, vehicle });
+      res.status(200).json({ ...transaction, seller: employer, vehicle });
     } catch (err: any) {
       next(new Error(err));
     }

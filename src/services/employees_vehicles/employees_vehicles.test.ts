@@ -38,27 +38,6 @@ describe('employees_employees_vehicles', () => {
     await employees_vehiclesService.deleteAll();
   });
 
-  it('should get many employees_vehicles by employer', async () => {
-    const first = await employees_vehiclesService.create({
-      ...generateEmployees_vehicles(),
-      id_employer: 1,
-    });
-    await employees_vehiclesService.create({
-      ...generateEmployees_vehicles(),
-      id_employer: 1,
-    });
-    await employees_vehiclesService.create({
-      ...generateEmployees_vehicles(),
-      id_employer: 2,
-    });
-    const employer1 = await employees_vehiclesService.getMany(1, 1);
-    const employer2 = await employees_vehiclesService.getMany(1, 2);
-    expect(employer2.count).toBe(1);
-    expect(employer1.count).toBe(2);
-    expect(employer1.Employees_Vehicle[0].id).toBe(first?.id);
-    await employees_vehiclesService.deleteAll();
-  });
-
   it('should getOne employees_vehicles by vehicle', async () => {
     const vehicle1 = await employees_vehiclesService.create({
       ...generateEmployees_vehicles(),
@@ -72,6 +51,30 @@ describe('employees_employees_vehicles', () => {
     const resp2 = await employees_vehiclesService.getOneByVehicle(2);
     expect(resp2?.id).toBe(vehicle2?.id);
     expect(resp1?.id).toBe(vehicle1?.id);
+    await employees_vehiclesService.deleteAll();
+  });
+
+  it('should get all transactions by employer', async () => {
+    const transaction1 = await employees_vehiclesService.create({
+      id_employer: 1,
+      id_vehicle: faker.datatype.number(),
+    });
+    const transaction2 = await employees_vehiclesService.create({
+      id_employer: 1,
+      id_vehicle: faker.datatype.number(),
+    });
+    const transaction3 = await employees_vehiclesService.create({
+      id_employer: 1,
+      id_vehicle: faker.datatype.number(),
+    });
+
+    const transactions =
+      await employees_vehiclesService.getAllTransactionsByEmployer(1);
+
+    expect(transactions[0]?.id).toBe(transaction1?.id);
+    expect(transactions[1]?.id).toBe(transaction2?.id);
+    expect(transactions[2]?.id).toBe(transaction3?.id);
+
     await employees_vehiclesService.deleteAll();
   });
 });

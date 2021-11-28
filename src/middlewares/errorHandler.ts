@@ -29,6 +29,9 @@ export const errorHandler = (
   }
 
   switch (Error) {
+    case 'Error: id_vehicle already in use':
+      res.status(409).json({ Error: 'Vehicle already sold or reserved' });
+      return;
     case 'Ops. This vehicle not exist':
       response(404);
       return;

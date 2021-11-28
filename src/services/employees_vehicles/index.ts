@@ -1,12 +1,15 @@
-/* eslint-disable @typescript-eslint/indent */
 import { DataTypes, Sequelize } from 'sequelize';
+/* eslint-disable @typescript-eslint/indent */
 import { employees_vehicle } from '../../types/entities/Employees_Vehicles';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Employees_VehicleModel } from '../../db/models/employees_vehicles';
+import { VehiclesModel } from '../../db/models/vehicles';
+import { EmployeesService } from '../employees';
 
 export const Employees_vehiclesService = (sequelize: Sequelize) => {
   const Employees_Vehicle = Employees_VehicleModel(sequelize, DataTypes);
-
+  const vehicles = VehiclesModel(sequelize, DataTypes);
+  const employees = EmployeesService(sequelize);
   return {
     create: async (
       Vehicle: employees_vehicle
@@ -39,6 +42,19 @@ export const Employees_vehiclesService = (sequelize: Sequelize) => {
       return response.get({ clone: true });
     },
 
+    getAllTransactionsByEmployer: async (id: number) => {
+      const response = await Employees_Vehicle.findAll({
+        where: { id_employer: id },
+      });
+
+      if (!response) return [];
+      const transactions = response.map((item) => item.get({ clone: true }));
+      const res = Promise.all(
+        transactions.map((item) => vehicles.findByPk(item.id_vehicle))
+      );
+      return (await res).map((item) => item?.get({ clone: true }));
+    },
+
     getOneByVehicle: async (id: number): Promise<employees_vehicle | void> => {
       if (!id) throw 'id was not provided';
       const response = await Employees_Vehicle.findOne({
@@ -48,10 +64,7 @@ export const Employees_vehiclesService = (sequelize: Sequelize) => {
       return response.get({ clone: true });
     },
 
-    getMany: async (
-      page: number,
-      employerID?: number
-    ): Promise<{ count: number; Employees_Vehicle: employees_vehicle[] }> => {
+    getMany: async (page: number, employerID?: number) => {
       try {
         const ending = page * 10;
         const initial = ending - 10;
@@ -68,14 +81,23 @@ export const Employees_vehiclesService = (sequelize: Sequelize) => {
                 offset: initial,
                 limit: ending,
               }
+        ).then((res) => ({
+          count: res.count,
+          transactions: res.rows.map((item) => item.get({ clone: true })),
+        }));
+
+        const transactions = await Promise.all(
+          response.transactions.map(async (item) => ({
+            ...item,
+            seller: await employees.getOne(item.id_employer),
+            vehicle: await vehicles
+              .findByPk(item.id_vehicle)
+              .then((res) => res?.get({ clone: true })),
+          }))
         );
-        if (!response) throw new Error('not found');
-        return {
-          count: response.count,
-          Employees_Vehicle: response.rows.map((Vehicle) =>
-            Vehicle.get({ clone: true })
-          ),
-        };
+
+        if (!transactions) return [];
+        return [...transactions];
       } catch (err: any) {
         throw new Error(err);
       }

@@ -4,6 +4,7 @@ import { EmployeesService } from '../../services/employees';
 import { sequelize } from '../../db/connectDB';
 import { BCRYPT } from '../../utils/bcrypt';
 import { JWT } from '../../utils/jwt/Jwt';
+import { Employees_vehiclesService } from '../../services/employees_vehicles';
 
 const bcrypt = new BCRYPT();
 const jwt = new JWT();
@@ -28,8 +29,13 @@ export const EmployeesController = () => ({
     try {
       const employerID = Number(req.params.id);
       if (!employerID) throw 'id was not provided';
+
       const employer = await EmployeesService(sequelize).getOne(employerID);
-      res.status(200).json(employer);
+      const transactions = await Employees_vehiclesService(
+        sequelize
+      ).getAllTransactionsByEmployer(employerID);
+
+      res.status(200).json({ ...employer, sales: transactions });
     } catch (err: any) {
       next(new Error(err));
     }

@@ -33,4 +33,6 @@ EmployeesRoutes.get(
   employeesController.getManyEmployees
 );
 
+EmployeesRoutes.post('/login', employeesController.authenticate);
+
 export default EmployeesRoutes;

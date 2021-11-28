@@ -47,7 +47,7 @@ export const VehicleService = (sequelize: Sequelize) => {
     getOne: async (id: number): Promise<vehicle | void> => {
       if (!id) throw 'id was not provided';
       const response = await Vehicles.findByPk(id);
-      if (!response) throw 'vehicle not found';
+      if (!response) throw null;
       return response.get({ clone: true });
     },
 
